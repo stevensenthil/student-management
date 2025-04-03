@@ -11,42 +11,39 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import com.DAO.StudentDAO;
 @WebServlet("/signup")
 public class Signup extends HttpServlet{
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		PrintWriter p=resp.getWriter();
-		String id=req.getParameter("id");
-		String name=req.getParameter("name");
-		String contact=req.getParameter("contact");
+		
+		int id=Integer.parseInt(req.getParameter("id"));
+		String name=req.getParameter("name");		
 		String email=req.getParameter("email");
+		long contact=Long.parseLong(req.getParameter("contact"));
 		String pass=req.getParameter("pass");
 		String repass=req.getParameter("repass");	
 		
-		
-		try {
-			Connection con=EstablishConnection.getConnection();
-			PreparedStatement pst=con.prepareStatement("insert into admin values(?,?,?,?,?)");
-			pst.setInt(1, Integer.parseInt(id));
-			pst.setString(2, name);
-			pst.setString(3, email);
-			pst.setString(4, contact);
-			pst.setString(5, pass);
-			if(pass.equals(repass)) {
-			boolean Result=pst.execute();
-			if(!Result) {
-//				p.println("Insert success");
-				req.getRequestDispatcher("adminlogin.jsp").include(req, resp);
-			}
-			}
+		try {	
+			if (pass != null && repass != null && !pass.equals(repass)) {
+		        req.setAttribute("errorMsg", "Passwords do not match!");
+		        req.getRequestDispatcher("adminsignup.jsp").forward(req, resp);
+		    }
 			else {
-				req.setAttribute("msg","Password do not match");
-				req.getRequestDispatcher("adminsignup.jsp").include(req, resp);
+				int row=StudentDAO.saveadmin(id, name,email,contact, pass);
+				if(row==1) {
+				req.getRequestDispatcher("adminlogin.jsp").include(req, resp);			
+				}
 			}
-			con.close();
+			
+			
+		} catch (ClassNotFoundException e) {
+			e.printStackTrace();
 		} catch (SQLException e) {
 			e.printStackTrace();
 		}
+		
 		
 	}
 }

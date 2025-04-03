@@ -25,7 +25,7 @@ public class StudentDAO {
 		pst.setString(2,s.getName() );
 		pst.setInt(3, s.getPhysics());
 		pst.setInt(4, s.getChemistry());
-		pst.setInt(4, s.getMaths());		
+		pst.setInt(5, s.getMaths());		
 		return pst.executeUpdate();
 		}
 //	Find Student
@@ -74,15 +74,26 @@ public class StudentDAO {
 	}
 	
 //	Save Admin
-	public static int saveadmin(int id, String name, long contact, String email, String password) throws SQLException, ClassNotFoundException {
+	public static int saveadmin(int id, String name,  String email,long contact, String password) throws SQLException, ClassNotFoundException {
 	    Connection con = getConnection();
 	    PreparedStatement pst = con.prepareStatement("insert into admin values(?,?,?,?,?)");
 	    pst.setInt(1, id);
 	    pst.setString(2, name);
-	    pst.setLong(3, contact);
-	    pst.setString(4, email);
+	    pst.setString(3, email);
+	    pst.setLong(4, contact);	    
 	    pst.setString(5, password);
 	    return pst.executeUpdate();
+	}
+//	Update Student
+	public static int updatestudent(int id,String name,int physics,int chemistry,int maths) throws SQLException, ClassNotFoundException {
+		Connection con=getConnection();
+		PreparedStatement pst=con.prepareStatement("update students set name=?,physics=?,chemistry=?,maths=? where id=?");
+		pst.setString(1, name);
+		pst.setInt(2, physics);
+		pst.setInt(3, chemistry);
+		pst.setInt(4, maths);
+		pst.setInt(5,id);
+		return pst.executeUpdate();
 	}
 	
 	

@@ -8,34 +8,22 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 import com.DAO.StudentDAO;
 
-@WebServlet("/login")
-public class Login extends HttpServlet{
+@WebServlet("/deletestudent")
+public class Deletestudent extends HttpServlet {
 	@Override
 	protected void service(HttpServletRequest req, HttpServletResponse resp) throws ServletException, IOException {
-		String email=req.getParameter("email");
-		String password=req.getParameter("password");
-		boolean valid;
+		int id=Integer.parseInt(req.getParameter("id"));
 		try {
-			valid=StudentDAO.findadmin(email, password);
-			if(valid) {
-				
+			int row=StudentDAO.deletestudent(id);
+			if(row==1) {
+				req.setAttribute("row", "1");
 				req.getRequestDispatcher("adminhome.jsp").include(req, resp);
-			}
-			else {
-				req.setAttribute("msg","Invalid Email or Password");
-				req.getRequestDispatcher("adminlogin.jsp").include(req, resp);
 			}
 		} catch (ClassNotFoundException | SQLException e) {
 			e.printStackTrace();
 		}
-
-//		else {
-//			req.setAttribute("msg","Invalid Email or Password");
-//			req.getRequestDispatcher("adminlogin.jsp").include(req, resp);
-//		}
 	}
 }

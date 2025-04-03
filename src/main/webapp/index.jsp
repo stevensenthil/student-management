@@ -4,20 +4,37 @@
 <html>
 <head>
 <meta charset="UTF-8">
-<title>Insert title here</title>
-<style>
-	 a{
+<title>Home Page</title>
+
+<style >
+	#all{
+	background-color: #000000cc;
+	}
+	#home{
+		border: 1px solid black;
+		background-color: blue;
+		text-align: center;
+		width: 25%;
+		position: relative;
+		left: 520px;
+		top: 220px;
+		padding: 10px;
+		border-radius: 10px;
+	}
+	a{	
 		text-decoration: none;
-		font-size: 20px;
-		color: black;
-		display:inline;
+		font-size: 25px;
+		color: white;	
+		font-weight: bold;	
+		font-style: italic;
+		
 	}
 </style>
 </head>
-<body>
+<body id="all">
 	<div id="home">
-		<a href="adminlogin.jsp" id="admin">Admin</a><br><br>
-		<a href="" id="student">Student</a>
+		<a href="adminlogin.jsp" class="add">Admin</a><br><br>
+		<a href="studentlogin.jsp" class="add">Student</a>
 	</div>
 </body>
 </html>
